@@ -18,9 +18,12 @@
   - Subtract 1 from the variable.
 
 - You can combine shorthand
-    `int a, b;`
-    `a = 5;`
-    `b = a++ * 6;`
+  
+    ```
+    int a, b;
+    a = 5;
+    b = a++ * 6;
+    ```
     
 - Add some value to the variable.
   - i = i + 12

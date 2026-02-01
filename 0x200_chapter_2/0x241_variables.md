@@ -17,9 +17,12 @@
 - Once variables are declared, they can be used
 - Variables can be assigned values when they are declared or anytime aftward using the `=` operator.
   - Example
-    `int a = 13, b;`
-    `float k;`
-    `char z = 'A';`
-    `k = 3.14;`
-    `z = 'w';`
-    `b = a + 5;`
+
+    ```
+    int a = 13, b;
+    float k;
+    char z = 'A';
+    k = 3.14;
+    z = 'w';
+    b = a + 5;
+    ```

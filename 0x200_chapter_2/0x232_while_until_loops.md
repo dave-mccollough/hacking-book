@@ -6,18 +6,24 @@
 - **while loops**
   - Executes while a condition is `true`
   - Example:  Loop will only execute if `you are hungry` condition is true.
-    `While (you are hungry)`
-    `{`
-        `Find some food;`
-        `Eat some food;`
-    `}`
+
+    ```
+    While (you are hungry)
+    {
+        Find some food;
+        Eat some food;
+    ~~~~}
+    ```
 
 - **until loops**
   - Inverted `while` loop
   - Not used in C - used in Perl
   - Example
-    `Until (you are not hungry)`
-    `{`
-        `Find some food;`
-        `Eat the food;`
-    `}`
+  
+    ```
+    Until (you are not hungry)
+    {
+        Find some food;
+        Eat the food;
+    }
+    ```
