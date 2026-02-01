@@ -1,13 +1,15 @@
  # 0x231 - If, Then, Else
 
-`if (condition) then`
-`{`
-`Set of isntructions to execute if condition is met;`
-`}`
-`else`
-`{`
-`set of instructions to execute if condition is not met;`
-`}`
+```
+if (condition) then
+{
+Set of isntructions to execute if condition is met;
+}
+else
+{
+set of instructions to execute if condition is not met;
+}
+```
 
 - C like pseudo-code example:
 - Every instruction ends in a semicolon
