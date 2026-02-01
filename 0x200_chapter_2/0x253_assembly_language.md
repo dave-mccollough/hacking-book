@@ -1,0 +1,98 @@
+# 0x253 - Assembly language
+
+- Set GDB disassembly syntax to Intel
+  - `gdb -q`
+  - `set disassembly-flavor intel`
+  - `echo "set disassembly-flavor intel" > ~/.gdbinit`
+  - `cat ~/.gbdinit`
+- Assembly instructions in Intel typically follow this format
+  - `operation <destination>, <source>`
+- The destination and source values will either be a register, address, or a value
+- The operations are usually intuitive mnemonics: 
+  - The mov operation will move a value from the source to the destination, 
+  - sub will subtract
+  - inc will increment 
+- The instructions below will move the value from RSP to RBP
+- Subtract 10 from RSP (storing the result in RSP).
+  -  `114e:       48 89 e5                mov    rbp,rsp`
+  -  `1151:       48 83 ec 10             sub    rsp,0x10`
+-  Operations that are used to control the flow of execution.
+   -  `cmp` is used to compare values
+   -  Any operation beginning with j is used to jump to a different part of the code (depending on the result of the comparison). 
+      - `jmp` Unconditionally transfers program execution to a new memory address
+      -  `jle` jumps if is less than or equal to
+         -  A conditional jump that transfers program control to a specific address (label) 
+         -  If the result of the previous operation indicates the first operand was signed less than or equal to the second operand, typically after a CMP (compare) or SUB instruction. 
+         -  It checks the CPU flags (Sign Flag, Overflow Flag, Zero Flag) to make this decision, allowing for branching in programs, and is often used in loops. 
+
+- The `-g` flag can be used by the GCC compiler to include extra debugging information
+  - This will giveing GDB access to the source code
+  gdb -q ./a.out
+    Reading symbols from ./a.out...
+    (gdb) list
+    warning: Source file is more recent than executable.
+    1       # include <stdio.h>
+    2
+    3       int main()
+    4       {
+    5           int i;
+    6           for(i=0; i<10; i++)
+    7           {
+    8               puts("Hello, World!\n");
+    9           }
+    10          return 0;
+    (gdb) disassemble main
+    Dump of assembler code for function main:
+        0x0000000000001149 <+0>:     endbr64
+        0x000000000000114d <+4>:     push   rbp
+        0x000000000000114e <+5>:     mov    rbp,rsp
+        0x0000000000001151 <+8>:     sub    rsp,0x10
+        0x0000000000001155 <+12>:    mov    DWORD PTR [rbp-0x4],0x0
+        0x000000000000115c <+19>:    jmp    0x1171 <main+40>
+        0x000000000000115e <+21>:    lea    rax,[rip+0xe9f]        # 0x2004
+        0x0000000000001165 <+28>:    mov    rdi,rax
+        0x0000000000001168 <+31>:    call   0x1050 <puts@plt>
+        0x000000000000116d <+36>:    add    DWORD PTR [rbp-0x4],0x1
+        0x0000000000001171 <+40>:    cmp    DWORD PTR [rbp-0x4],0x13
+        0x0000000000001175 <+44>:    jle    0x115e <main+21>
+        0x0000000000001177 <+46>:    mov    eax,0x0
+        0x000000000000117c <+51>:    leave
+        0x000000000000117d <+52>:    ret
+    End of assembler dump.
+    (gdb) break main
+    Breakpoint 1 at 0x1155: file firstprog.c, line 6.
+    (gdb) run
+    Starting program: /home/dmccollough/Source/hacking-book/0x200/01_first_program/a.out 
+
+    This GDB supports auto-downloading debuginfo from the following URLs:
+    <https://debuginfod.ubuntu.com>
+    Enable debuginfod for this session? (y or [n]) y
+    Debuginfod has been enabled.
+    To make this setting permanent, add 'set debuginfod enabled on' to .gdbinit.
+    Downloading separate debug info for system-supplied DSO at 0x7ffff7fc3000
+    [Thread debugging using libthread_db enabled]                                                                                              
+    Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+    Breakpoint 1, main () at firstprog.c:6
+    6           for(i=0; i<10; i++)
+    (gdb) run
+    The program being debugged has been started already.
+    Start it from the beginning? (y or n) y
+    Starting program: /home/dmccollough/Source/hacking-book/0x200/01_first_program/a.out 
+    [Thread debugging using libthread_db enabled]
+    Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+    Breakpoint 1, main () at firstprog.c:6
+    6           for(i=0; i<10; i++)
+    (gdb) info register rip
+    rip            0x555555555155      0x555555555155 <main+12>
+
+- Source code and the disassembly of the main() function is displayed
+- A breakpoint is set at the start of main(), and the program is run
+- The breakpoing tells the dubugger to pause the execution of the program when it gets to that point
+  - Since the break is set at the start of `main()` function, the program pauses before executing any insturctions
+- The value of RIP(EIP) is displayed
+  - RIP contails a memory address that points an instruction in main functions disassembly
+- The instructions before this are collectively known as the function prologue and are generated by the compiler to set up memory for the rest of the main() function’s local variables
+  - Part of the reason variables need to be declared in C is to aid the construction of this section of code. 
+
